@@ -1223,33 +1223,31 @@ function select() {
 function addtable(data)
 {
     $('#createtablle').empty();
-    var table=$("<table border=\"1\">");
+    var div = $("#createtablle");
+    div.empty();
+    div.css("display","block");
+    var table=$("<table border=\"1\" class='table_content'>");
     table.appendTo($("#createtablle"));
     var rowCount=data.length;
-
     var tr=$("<tr></tr>");
     tr.appendTo(table);
-    var td=$("<th>编号</th>");
-    td.appendTo(tr);
-    var td=$("<th>上一次检查时间</th>");
-    td.appendTo(tr);
-    var td=$("<th>位置</th>");
-    td.appendTo(tr);
-    var td=$("<th>状况</th>");
-    td.appendTo(tr);
-
+    var key = data[0].getKeys();
+    for(var ti in key)
+        if(key[ti] != "geometry"){
+            var td=$("<td>"+key[ti]+"</td>");
+            td.appendTo(tr);
+        }
     for(var i=0;i<rowCount;i++)
     {
+        var tname = data[i];
+        tname = tname.getProperties();
         var tr=$("<tr></tr>");
         tr.appendTo(table);
-        var td=$("<td>"+data[i].S.Id+"</td>");
-        td.appendTo(tr);
-        var td=$("<td>"+data[i].S["上一次检查"]+"</td>");
-        td.appendTo(tr);
-        var td=$("<td>"+data[i].S["位置"]+"</td>");
-        td.appendTo(tr);
-        var td=$("<td>"+data[i].S["状况"]+"</td>");
-        td.appendTo(tr);
+        for(var value in tname)
+            if (value != "geometry") {
+                var td = $("<td>" + tname[value] + "</td>");
+                td.appendTo(tr);
+            }
     }
     tr.appendTo(table);
     $("#createtablle").append("</table>");

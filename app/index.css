@@ -30,7 +30,7 @@ html, body {
 
 .table_content
 {
-    font:微软雅黑;
+    font-family:"微软雅黑";
     color: #ffffff;
     left:10%;
     width: 80%;

@@ -276,3 +276,24 @@ html, body {
     bottom: 0;
     width: 100%;
 }
+
+.table_search
+{
+    position:absolute;
+    top:555px;
+    right: 0px;
+    width: 500px;
+    height: 200px;
+    background: #444444;
+    z-index: 2005;
+    border-radius: 10px;
+}
+
+.table_content
+{
+    font-family:"\5FAE\8F6F\96C5\9ED1";
+    color: #ffffff;
+    left:10%;
+    width: 80%;
+    text-align: center;
+}
