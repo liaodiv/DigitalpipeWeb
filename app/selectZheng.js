@@ -6,6 +6,15 @@
 /**
  * select and edit
  * */
+
+var ol=require("openlayers");   ///引入openlayers就行
+
+if(!window.map){               //引入map全局变量
+    console.log("map不存在")
+}else {
+    var map = window.map;
+}
+
 var featureRequest = new ol.format.WFS().writeGetFeature({
     srsName: 'EPSG:4326',                  ///参照系
     featureNS: 'GIS_DATA', ///命名空间URI
@@ -32,7 +41,7 @@ function select() {
 function addtable(data)
 {
     $('#createtablle').empty();
-    var table=$("<table border=\"1\">");
+    var table=$("<table border=\"1\" class='table_content'>");
     table.appendTo($("#createtablle"));
     var rowCount=data.length;
 

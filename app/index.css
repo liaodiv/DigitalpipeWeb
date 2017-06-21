@@ -2,6 +2,7 @@
     position: absolute;
     right: 20px;
     top: 20px;
+    background-color: white;
 }
 
 html, body {
@@ -13,4 +14,25 @@ html, body {
     top: 0;
     bottom: 0;
     width: 100%;
+}
+
+.table_search
+{
+    position:absolute;
+    top:555px;
+    right: 0px;
+    width: 500px;
+    height: 200px;
+    background: #444444;
+    z-index: 2005;
+    border-radius: 10px;
+}
+
+.table_content
+{
+    font:微软雅黑;
+    color: #ffffff;
+    left:10%;
+    width: 80%;
+    text-align: center;
 }

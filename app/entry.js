@@ -133,7 +133,7 @@ interaction.on('select',function (e) {
 })
 
 
-var select=require('./selectZheng.js');
+var select=require('./selectZheng');
 
 
 
