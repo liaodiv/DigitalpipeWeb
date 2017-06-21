@@ -3,33 +3,19 @@
  */
 //z在这里写吧
 /////////////////////////////////////点击获取数据////////////////////////////////
-/*var Smap=window.map;
-var interaction;
-Smap.removeInteraction(interaction);
-interaction = new ol.interaction.Select();
-Smap.addInteraction(interaction);
-interaction.on('select',function (e) {
-    console.log(e.selected[0].getKeys());
-    console.log(e.selected)
-    addtable(e.selected);
-    // console.log(e.target.getFeature());
-})
 /**
  * select and edit
  * */
-/*var featureRequest = new ol.format.WFS().writeGetFeature({
+var featureRequest = new ol.format.WFS().writeGetFeature({
     srsName: 'EPSG:4326',                  ///参照系
     featureNS: 'GIS_DATA', ///命名空间URI
     featurePrefix: 'postdata',             //
     featureTypes: ['污水线'],           ///图层名
     outputFormat: 'application/json',
-    filter:
-        ol.format.filter.equalTo('continent', '亚洲')
 });
-*/
+
 function select() {
     console.log("it start");
-    //fetch('https://ahocevar.com/geoserver/wfs', {
     fetch('http://localhost:8080/geoserver/wfs', {
         method: 'POST',
         body: new XMLSerializer().serializeToString(featureRequest)
@@ -38,15 +24,43 @@ function select() {
     }).then(function(json) {
         var features = new ol.format.GeoJSON().readFeatures(json);
         console.log(features);
-        addtbale(features);
-        /*  vectorSource.addFeatures(features);
-         map.getView().fit(vectorSource.getExtent());*/
+        addtable(features);
    });
     console.log("it start");
     return false;
 }
 function addtable(data)
 {
-    console.log("创表ing");
+    $('#createtablle').empty();
+    var table=$("<table border=\"1\">");
+    table.appendTo($("#createtablle"));
+    var rowCount=data.length;
+
+    var tr=$("<tr></tr>");
+    tr.appendTo(table);
+    var td=$("<th>编号</th>");
+    td.appendTo(tr);
+    var td=$("<th>上一次检查时间</th>");
+    td.appendTo(tr);
+    var td=$("<th>位置</th>");
+    td.appendTo(tr);
+    var td=$("<th>状况</th>");
+    td.appendTo(tr);
+
+    for(var i=0;i<rowCount;i++)
+    {
+        var tr=$("<tr></tr>");
+        tr.appendTo(table);
+        var td=$("<td>"+data[i].S.Id+"</td>");
+        td.appendTo(tr);
+        var td=$("<td>"+data[i].S["上一次检查"]+"</td>");
+        td.appendTo(tr);
+        var td=$("<td>"+data[i].S["位置"]+"</td>");
+        td.appendTo(tr);
+        var td=$("<td>"+data[i].S["状况"]+"</td>");
+        td.appendTo(tr);
+    }
+    tr.appendTo(table);
+    $("#createtablle").append("</table>");
 }
 module.exports=select;
