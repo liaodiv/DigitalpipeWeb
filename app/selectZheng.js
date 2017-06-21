@@ -6,6 +6,15 @@
 /**
  * select and edit
  * */
+
+var ol=require("openlayers");   ///引入openlayers就行
+
+if(!window.map){               //引入map全局变量
+    console.log("map不存在")
+}else {
+    var map = window.map;
+}
+
 var featureRequest = new ol.format.WFS().writeGetFeature({
     srsName: 'EPSG:4326',                  ///参照系
     featureNS: 'GIS_DATA', ///命名空间URI
