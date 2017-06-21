@@ -129,23 +129,9 @@ map.removeInteraction(interaction);
 interaction = new ol.interaction.Select();
 map.addInteraction(interaction);
 interaction.on('select',function (e) {
-    console.log(e.selected[0].getKeys());
-    console.log(e.selected)
-    //addtable(e.selected);
-    // console.log(e.target.getFeature());
+
 })
-/**
- * select and edit
- * */
-var featureRequest = new ol.format.WFS().writeGetFeature({
-    srsName: 'EPSG:4326',                  ///参照系
-    featureNS: 'GIS_DATA', ///命名空间URI
-    featurePrefix: 'postdata',             //
-    featureTypes: ['污水线'],           ///图层名
-    outputFormat: 'application/json',
-    filter:
-        ol.format.filter.equalTo('continent', '亚洲')
-});
+
 
 var select=require('./selectZheng.js');
 
