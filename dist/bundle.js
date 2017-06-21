@@ -73,8 +73,11 @@
 /**
  * Created by 27353 on 2017/6/14.
  */
-
+//TODO 图层控制组件
 ///获取layers ,返回地图控制的
+if(!window.map){
+    console.log("map不存在")
+}
 var Conmap = window.map;
 
 var layers=Conmap.getLayers();
