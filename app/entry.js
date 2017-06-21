@@ -147,7 +147,7 @@ var featureRequest = new ol.format.WFS().writeGetFeature({
         ol.format.filter.equalTo('continent', '亚洲')
 });
 
-var select=require('./selectZheng.js');
+var select=require('./selectZheng');
 
 
 
