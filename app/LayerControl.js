@@ -56,4 +56,4 @@ function addChangeEvent(element, layer) {
     };
 }
 
-module.exports = loadLayersCOntrol;
+module.exports = loadLayersCOntrol;  //导出函数
