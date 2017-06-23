@@ -6,7 +6,6 @@
 /**
  * select and edit
  * */
-
 var ol=require("openlayers");   ///引入openlayers就行
 
 if(!window.map){               //引入map全局变量
