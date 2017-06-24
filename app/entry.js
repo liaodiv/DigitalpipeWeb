@@ -123,18 +123,6 @@ var map = new ol.Map({
 window.map = map;   ///map导入全局变量
 var addcontrol=require('./LayerControl');
 addcontrol(map,'LayerControl');
-///////////点击响应////////////
-var interaction;
-map.removeInteraction(interaction);
-interaction = new ol.interaction.Select();
-map.addInteraction(interaction);
-interaction.on('select',function (e) {
-
-})
-
-
-var select=require('./selectZheng');
-
 
 
 
