@@ -63,11 +63,88 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+/**
+ * Created by 27353 on 2017/6/14.
+ */
+//TODO 图层控制组件
+///获取layers ,返回地图控制的
+if(!window.map){
+    console.log("map不存在")
+}
+var Conmap = window.map;
+
+var layers=Conmap.getLayers();
+
+console.log(layers);
+
+function loadLayersCOntrol(map,id) {
+    var treeContent = document.getElementById(id); //图层目录容器
+    var layers = map.getLayers(); //获取地图中所有图层
+    for (var i = 0; i < layers.getLength(); i++) {
+        //获取每个图层的名称、是否可见属性
+        layers[i] = layers.item(i);
+        var layerName = layers[i].get('title');
+        var layerVisibility = layers[i].getVisible();
+        //新增li元素，用来承载图层项
+        var elementLi = document.createElement('li');
+        treeContent.appendChild(elementLi); // 添加子节点
+        //创建复选框元素
+        var elementInput = document.createElement('input');
+        elementInput.type = "checkbox";
+        elementInput.name = "layers";
+        elementLi.appendChild(elementInput);
+        //创建label元素
+        var elementLable = document.createElement('label');
+        elementLable.className = "layer";
+        //设置图层名称
+        elementLable.innerText = layerName;
+        elementLi.appendChild(elementLable);
+        //设置图层默认显示状态
+        if (layerVisibility) {
+            elementInput.checked = true;
+        }
+        addChangeEvent(elementInput, layers[i]);  //为checkbox添加变更事件
+    }
+
+    
+}
+
+
+function addChangeEvent(element, layer) {
+    element.onclick = function () {
+        if (element.checked) {
+            layer.setVisible(true); //显示图层
+        }
+        else {
+            layer.setVisible(false); //不显示图层
+        }
+    };
+}
+
+module.exports = loadLayersCOntrol;  //导出函数
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // OpenLayers. See https://openlayers.org/
@@ -1112,171 +1189,16 @@ Qk.prototype.un=Qk.prototype.K;
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-/**
- * Created by 27353 on 2017/6/14.
- */
-//TODO 图层控制组件
-///获取layers ,返回地图控制的
-if(!window.map){
-    console.log("map不存在")
-}
-var Conmap = window.map;
-
-var layers=Conmap.getLayers();
-
-console.log(layers);
-
-function loadLayersCOntrol(map,id) {
-    var treeContent = document.getElementById(id); //图层目录容器
-    var layers = map.getLayers(); //获取地图中所有图层
-    for (var i = 0; i < layers.getLength(); i++) {
-        //获取每个图层的名称、是否可见属性
-        layers[i] = layers.item(i);
-        var layerName = layers[i].get('title');
-        var layerVisibility = layers[i].getVisible();
-        //新增li元素，用来承载图层项
-        var elementLi = document.createElement('li');
-        treeContent.appendChild(elementLi); // 添加子节点
-        //创建复选框元素
-        var elementInput = document.createElement('input');
-        elementInput.type = "checkbox";
-        elementInput.name = "layers";
-        elementLi.appendChild(elementInput);
-        //创建label元素
-        var elementLable = document.createElement('label');
-        elementLable.className = "layer";
-        //设置图层名称
-        elementLable.innerText = layerName;
-        elementLi.appendChild(elementLable);
-        //设置图层默认显示状态
-        if (layerVisibility) {
-            elementInput.checked = true;
-        }
-        addChangeEvent(elementInput, layers[i]);  //为checkbox添加变更事件
-    }
-
-    
-}
-
-
-function addChangeEvent(element, layer) {
-    element.onclick = function () {
-        if (element.checked) {
-            layer.setVisible(true); //显示图层
-        }
-        else {
-            layer.setVisible(false); //不显示图层
-        }
-    };
-}
-
-module.exports = loadLayersCOntrol;  //导出函数
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Created by DELL on 2017/6/21.
- */
-//z在这里写吧
-/////////////////////////////////////点击获取数据////////////////////////////////
-/**
- * select and edit
- * */
-
-var ol=__webpack_require__(0);   ///引入openlayers就行
-
-if(!window.map){               //引入map全局变量
-    console.log("map不存在")
-}else {
-    var map = window.map;
-}
-
-var featureRequest = new ol.format.WFS().writeGetFeature({
-    srsName: 'EPSG:4326',                  ///参照系
-    featureNS: 'GIS_DATA', ///命名空间URI
-    featurePrefix: 'postdata',             //
-    featureTypes: ['污水线'],           ///图层名
-    outputFormat: 'application/json',
-});
-
-function select() {
-    console.log("it start");
-    fetch('http://localhost:8080/geoserver/wfs', {
-        method: 'POST',
-        body: new XMLSerializer().serializeToString(featureRequest)
-    }).then(function(response) {
-        return response.json();
-    }).then(function(json) {
-        var features = new ol.format.GeoJSON().readFeatures(json);
-        console.log(features);
-        addtable(features);
-   });
-    console.log("it start");
-    return false;
-}
-function addtable(data)
-{
-    $('#createtablle').empty();
-    var div = $("#createtablle");
-    div.empty();
-    div.css("display","block");
-    var table=$("<table border=\"1\" class='table_content'>");
-    table.appendTo($("#createtablle"));
-    var rowCount=data.length;
-    var tr=$("<tr></tr>");
-    tr.appendTo(table);
-    var key = data[0].getKeys();
-    for(var ti in key)
-        if(key[ti] != "geometry"){
-            var td=$("<td>"+key[ti]+"</td>");
-            td.appendTo(tr);
-        }
-    for(var i=0;i<rowCount;i++)
-    {
-        var tname = data[i];
-        tname = tname.getProperties();
-        var tr=$("<tr></tr>");
-        tr.appendTo(table);
-        for(var value in tname)
-            if (value != "geometry") {
-                var td = $("<td>" + tname[value] + "</td>");
-                td.appendTo(tr);
-            }
-    }
-    tr.appendTo(table);
-    $("#createtablle").append("</table>");
-}
-module.exports=select;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Created by 27353 on 2017/6/14.
  */
 
-var ol=__webpack_require__(0)
-__webpack_require__(4)
-__webpack_require__(3)
+var ol=__webpack_require__(3)
+__webpack_require__(2)
+__webpack_require__(1)
 
 /*var map = new ol.Map({
     target: 'map',
@@ -1393,20 +1315,8 @@ var map = new ol.Map({
 });
 
 window.map = map;   ///map导入全局变量
-var addcontrol=__webpack_require__(1);
+var addcontrol=__webpack_require__(0);
 addcontrol(map,'LayerControl');
-///////////点击响应////////////
-var interaction;
-map.removeInteraction(interaction);
-interaction = new ol.interaction.Select();
-map.addInteraction(interaction);
-interaction.on('select',function (e) {
-
-})
-
-
-var select=__webpack_require__(2);
-
 
 
 
