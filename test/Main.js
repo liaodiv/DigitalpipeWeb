@@ -2,6 +2,25 @@ var layer = new Array();  //map中的图层数组
 var layerName = new Array();  //图层名称数组
 var layerVisibility = new Array();  //图层可见属性数组
 
+var mousePositionControl = new ol.control.MousePosition({
+    coordinateFormat: ol.coordinate.createStringXY(4),
+    projection: 'EPSG:4326',
+    className: 'custom-mouse-position',
+    target: document.getElementById('mouse-position'),
+    undefinedHTML: '&nbsp;'
+});
+/*
+var projectionSelect = document.getElementById('projection');
+projectionSelect.addEventListener('change', function(event) {
+    mousePositionControl.setProjection(event.target.value);
+});
+
+var precisionInput = document.getElementById('precision');
+precisionInput.addEventListener('change', function(event) {
+    var format = ol.coordinate.createStringXY(event.target.valueAsNumber);
+    mousePositionControl.setCoordinateFormat(format);
+});*/
+
 /**
  * 加载图层列表数据
  * @param {ol.Map} map 地图对象
@@ -151,7 +170,12 @@ var map = new ol.Map({
     view: new ol.View({
         center: [12734150,3570900],
         zoom: 17
-    })
+    }),
+    controls: ol.control.defaults({
+        attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+            collapsible: false
+        })
+    }).extend([mousePositionControl])
 });
 loadLayersControl(map, "layerTree");
 /*******************************点击查询**************************************/
@@ -163,15 +187,30 @@ $('#click_query').on('click',function () {
 })
 
 selectInteraction.on('select',function (e) {
-    addtable(e.selected);
+    addtable(e.selected,"clickSelect");
 })
 
-function addtable(data)
+function addtable(data,condition)
 {
-    var div = $("#selectTable");
-    div.empty();
-    var table=$("<table class='table table-property'></table>");
-    table.appendTo($("#selectTable"));
+    var div;
+    var table;
+    switch(condition)
+    {
+        case "clickSelect":
+            div = $("#selectTable");
+            div.empty();
+            table=$("<table class='table table-property'></table>");
+            table.appendTo($("#selectTable"));
+            break;
+        case "selectByproperty":
+            div = $("#selectByproperty");
+            div.empty();
+            table=$("<table class='table table-property'></table>");
+            table.appendTo($("#selectByproperty"));
+            break;
+        default:
+            break;
+    }
     var rowCount=data.length;
     var thead=$("<thead></thead>");
     thead.appendTo(table);
@@ -202,13 +241,14 @@ function addtable(data)
 }
 
 /*****************拉框查询********************/
-var dragBox = new ol.interaction.DragBox({
-    condition: ol.events.condition.platformModifierKeyOnly
-});//框选图层
 
 var editsource=map_layers_source[1];
 
 var selectedFeatures = selectInteraction.getFeatures();//已选要素存储地
+
+var dragBox = new ol.interaction.DragBox({
+    condition: ol.events.condition.platformModifierKeyOnly
+});//框选图层
 
 $('#square_query').on('click',function () {
     map.removeInteraction(selectInteraction);
@@ -386,6 +426,62 @@ $('#task_submit').on('click',function () {
 $('#task_panel_close').on('click',function () {
     document.getElementById("task_panel").style.display='none';
 })
+
+/******************************属性查询************************************/
+var selectsource=new ol.source.Vector();
+var seleclayer=new ol.layer.Vector({
+    name: '查询',
+    visable:true,
+    source:selectsource,
+    style: function(feature, resolution) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#444444',
+                width: 2
+            }),
+            fill:new ol.style.Stroke({
+                color:'#444444',
+                width:2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#444444'
+                })
+            })
+        });
+    }
+})
+map.addLayer(seleclayer);
+
+$('#btn_search').on('click',function () {
+    var location_like=document.getElementById("search_reason").value;
+    var layers="GIS_DATA:污水线_2";
+    var layerArr=layers.split(":");
+    var property="location";
+    var queryRequest = featureRequest(layerArr[0], layerArr[1],property, location_like);
+    console.log(typeof XMLSerializer);
+    fetch('http://localhost:8080/geoserver/wfs', {
+        method: 'POST',
+        body: new XMLSerializer().serializeToString(queryRequest)
+    }).then(function (response) {
+        return response.json();
+    }).then(function (json) {
+        var features = new ol.format.GeoJSON().readFeatures(json);
+        addtable(features,"selectByproperty");
+    });
+})
+
+var featureRequest = function(naspace,layername,propertyname,propertytext) {
+    return new ol.format.WFS().writeGetFeature({
+        srsName: 'EPSG:4326',                  ///参照系
+        featureNS: 'GIS_DATA', ///命名空间URI
+        featurePrefix: naspace,             //
+        featureTypes: [layername],           ///图层名
+        outputFormat: 'application/json',
+        filter: ol.format.filter.equalTo(propertyname,propertytext)
+    });
+}
 
 
 
