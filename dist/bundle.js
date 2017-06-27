@@ -1267,11 +1267,13 @@ layers[1] =   new ol.layer.Vector({
 })
 
 
-layers[0] = new  ol.layer.Tile({
-    name: '地图',
-    visible: true,
-    source: new ol.source.OSM()
-})
+layers[0] = new ol.layer.Tile({
+    source: new ol.source.XYZ({
+        url:'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i345013117!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0'
+    }),
+    name:'谷歌地图',
+    visible:true
+});
 
 layers[2] =   new ol.layer.Vector({
     name: '污水检修点',

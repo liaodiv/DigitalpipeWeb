@@ -27,6 +27,8 @@ $('toolbar').on('click',function (event) {
             map.removeInteraction(dragBox);
             map.addInteraction(dragBox);
             break;
+        case "addMarker":
+            break;
         default:
             break;
     }

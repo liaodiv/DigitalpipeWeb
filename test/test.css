@@ -119,6 +119,7 @@ a.skiplink:focus {
     left: 50px;
 }
 #task_panel{
+    display: none;
     position: fixed;
     display: block;
     top: 80px;
