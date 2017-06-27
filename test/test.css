@@ -1,0 +1,158 @@
+html{
+    overflow: hidden;
+}
+a.skiplink {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+a.skiplink:focus {
+    clip: auto;
+    height: auto;
+    width: auto;
+    background-color: #fff;
+    padding: 0.3em;
+}
+#map:focus {
+    outline: #4A74A8 solid 0.15em;
+    position: absolute;
+    top:0px;
+    z-index:0;
+}
+.layerTree li
+{
+    list-style:none;
+    margin:5px 10px;
+    margin-bottom: 30px;
+}
+#map{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 52px;
+}
+.iframe-weather{
+    position: absolute;
+    left: 1120px;
+}
+#control_panel{
+    position: absolute;
+}
+#btn_group1{
+    position: absolute;
+    top:170px;
+    z-index: 1;
+}
+.btn-logo{
+    color: white;
+}
+#btn_layers{
+    background-color: rgba(34, 34, 34,1);
+}
+#btn_property{
+    background-color: rgba(34, 34, 34,1);
+}
+#btn_spatial{
+    background-color: rgba(34, 34, 34, 1);
+}
+#btn_picture{
+    background-color: rgba(34, 34, 34, 1);
+}
+#btn_task{
+    background-color: rgba(34, 34, 34,1);
+}
+#btn_group_editlayer{
+    position: absolute;
+    top: 125px;
+    left: 215px;
+}
+.btn-close{
+    position: absolute;
+    top: 12px;
+    left: 236px;
+}
+.control-panel{
+    position: absolute;
+    display: none;
+    width: 270px;
+    top: -20px;
+    left: -270px;
+    height: 620px;
+    overflow-y: auto;
+    font-family: "微软雅黑";
+    z-index: 1;
+}
+#form_selectlayer{
+    width: 210px;
+    position: absolute;
+    top: 55px;
+    left: 30px;
+}
+#form_inputproperty{
+    position: absolute;
+    top: 150px;
+    left: 30px;
+    width: 210px;
+}
+.table-property{
+    position: absolute;
+    top: 200px;
+    left: 10px;
+    width: 250px;
+}
+#square_query{
+    position: absolute;
+    width: 150px;
+    height: 30px;
+    left: 50px;
+    top: 60px;
+}
+#click_query{
+    position: absolute;
+    width: 150px;
+    height: 30px;
+    top: 110px;
+    left: 50px;
+}
+#task_panel{
+    position: fixed;
+    display: block;
+    top: 80px;
+    left: 1070px;
+    height: 330px;
+    width: 250px;
+    font-family: "微软雅黑";
+}
+#task_panel_close{
+    position: absolute;
+    top: 11px;
+    right: 9px;
+}
+#task_type{
+    position: absolute;
+    top: 20px;
+}
+#task_reason{
+    position: absolute;
+    top: 73px;
+}
+#task_time{
+    position: absolute;
+    top: 125px;
+}
+#task_submit{
+    position: absolute;
+    top: 170px;
+    left: 100px;
+    width: 100px;
+}
+#task_table{
+    position: absolute;
+    top: 100px;
+    left: 10px;
+    width: 250px;
+}
