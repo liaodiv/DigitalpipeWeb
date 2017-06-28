@@ -2,6 +2,7 @@ var layer = new Array();  //map中的图层数组
 var layerName = new Array();  //图层名称数组
 var layerVisibility = new Array();  //图层可见属性数组
 
+
 var mousePositionControl = new ol.control.MousePosition({
     coordinateFormat: ol.coordinate.createStringXY(4),
     projection: 'EPSG:4326',
@@ -309,6 +310,27 @@ var map = new ol.Map({
     }).extend([mousePositionControl])
 });
 loadLayersControl(map, "layerTree");
+/***********************************************为图层控件编辑按钮添加响应事件********************************************/
+var editsource=map_layers_source[1];
+
+$('#editlayer1').on('click',function () {
+    editsource=map_layers_source[1];
+})
+$('#editlayer2').on('click',function () {
+    editsource=map_layers_source[2];
+})
+$('#editlayer3').on('click',function () {
+    editsource=map_layers_source[3];
+})
+$('#editlayer4').on('click',function () {
+    editsource=map_layers_source[4];
+})
+$('#editlayer5').on('click',function () {
+    editsource=map_layers_source[5];
+})
+$('#editlayer6').on('click',function () {
+    editsource=map_layers_source[6];
+})
 /*******************************点击查询**************************************/
 var selectInteraction = new ol.interaction.Select();
 
@@ -372,8 +394,6 @@ function addtable(data,condition)
 }
 
 /*****************拉框查询********************/
-
-var editsource=map_layers_source[1];
 
 var selectedFeatures = selectInteraction.getFeatures();//已选要素存储地
 
