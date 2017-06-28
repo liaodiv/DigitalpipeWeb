@@ -539,65 +539,22 @@ $('#editlayer6').on('click',function () {
 /*******************************点击查询**************************************/
 var selectInteraction = new ol.interaction.Select();
 
-$('#click_query').on('click',function () {
+$('#edit_btn_choose').on('click',function () {
     map.removeInteraction(selectInteraction);
     map.addInteraction(selectInteraction);
 })
 
 selectInteraction.on('select',function (e) {
-    addtable(e.selected,"clickSelect");
+    addInformation(e.selected);
 })
 
-function addtable(data,condition)
+function addInformation(data)
 {
-    var div;
-    var table;
-    switch(condition)
-    {
-        case "clickSelect":
-            div = $("#selectTable");
-            div.empty();
-            table=$("<table class='table table-property'></table>");
-            table.appendTo($("#selectTable"));
-            break;
-        case "selectByproperty":
-            div = $("#selectByproperty");
-            div.empty();
-            table=$("<table class='table table-property'></table>");
-            table.appendTo($("#selectByproperty"));
-            break;
-        default:
-            break;
-    }
-    var rowCount=data.length;
-    var thead=$("<thead></thead>");
-    thead.appendTo(table);
-    var tr=$("<tr></tr>");
-    tr.appendTo(thead);
     var key = data[0].getKeys();
-    for(var ti in key){
-        if(key[ti] != "geometry"){
-            var td=$("<th>"+key[ti]+"</th>");
-            td.appendTo(tr);
-        }
-    }
-    var tbody=$("<tbody></tbody>");
-    tbody.appendTo(table);
-    for(var i=0;i<rowCount;i++)
-    {
-        var tname = data[i];
-        tname = tname.getProperties();
-        var tr=$("<tr></tr>");
-        tr.appendTo(tbody);
-        for(var value in tname)
-            if (value != "geometry") {
-                var td = $("<td>" + tname[value] + "</td>");
-                td.appendTo(tr);
-            }
-    }
-    tr.appendTo(tbody);
+    document.getElementById("singleClick_location").value=key["location"];
+    document.getElementById("singleClick_last_check").value=key["last_check"];
+    document.getElementById("singleClick_condition").value=key["condition"];
 }
-
 /*****************拉框查询********************/
 
 var selectedFeatures = selectInteraction.getFeatures();//已选要素存储地
@@ -606,12 +563,19 @@ var dragBox = new ol.interaction.DragBox({
     condition: ol.events.condition.platformModifierKeyOnly
 });//框选图层
 
-$('#square_query').on('click',function () {
+$('#spatial_btn_square').on('click',function () {
     map.removeInteraction(selectInteraction);
     map.addInteraction(selectInteraction);
     map.removeInteraction(dragBox);
     map.addInteraction(dragBox);
 })
+
+$('#spatial_close').click(function(){
+    $('#control_panel').animate({left:'0px'},1);
+    $("#spatial").css("display","none");
+    map.removeInteraction(selectInteraction);
+    map.removeInteraction(dragBox);
+});
 
 dragBox.on('boxend', function() {
     var extent = dragBox.getGeometry().getExtent();
@@ -627,11 +591,11 @@ dragBox.on('boxstart', function() {
 
 function addtable_box(data)
 {
-    var div = $("#selectTable");
+    var div = $("#spatial_table");
     div.empty();
     div.css("display","block");
     var table=$("<table class='table table-property'></table>");
-    table.appendTo($("#selectTable"));
+    table.appendTo($("#spatial_table"));
     var thead=$("<thead></thead>");
     thead.appendTo(table);
     var tr=$("<tr></tr>");
@@ -687,12 +651,13 @@ var markerLayer = new ol.layer.Vector({
 map.addLayer(markerLayer);
 
 var point;
+var point_feature=new Array();
 
 function addTask(data)
 {
     var div = $("#task_table");
     div.empty();
-    var table=$("<table class='table'></table>");
+    var table=$("<table class='table task-table'></table>");
     table.appendTo($("#task_table"));
     var rowCount=data.length;
     var thead=$("<thead></thead>");
@@ -742,6 +707,7 @@ function addTask(data)
 function deleteTask(id)
 {
     markerSource.removeFeature(data[id]);
+    ToBack(id,"delete");
     data[id]=null;
     addTask(data);
 }
@@ -753,7 +719,13 @@ var getclickPoint=function(e)
 }
 
 $('#task_arrange').on('click',function () {
+    map.removeInteraction(selectInteraction);
+    map.addInteraction(selectInteraction);
     map.on('click',getclickPoint);
+})
+
+selectInteraction.on('select',function (e) {
+    point_feature[i]=e.selected;
 })
 
 $('#task_send').on('click',function(){
@@ -776,6 +748,7 @@ $('#task_submit').on('click',function () {
     addTask(data);
     markerSource.addFeature(newfeature);
     document.getElementById("task_panel").style.display='none';
+    ToBack(i,"add");
     i++;
 })
 
@@ -783,27 +756,56 @@ $('#task_panel_close').on('click',function () {
     document.getElementById("task_panel").style.display='none';
 })
 
-$('#task_send').on('click',function () {
+function ToBack(num,backCondition)
+{
     var json_str;
-    var rowCount=data.length;
-    for(var i=0;i<rowCount;i++) {
-        if (data[i] != null) {
-            var tname = data[i];
-            tname = tname.getProperties();
-            var tr = $("<tr></tr>");
-            tr.appendTo(tbody);
-            for (var value in tname) {
-                if (value != "geometry") {
-                    var td = $("<td>" + tname[value] + "</td>");
-                    td.appendTo(tr);
-                }
-            }
-            var id = tname["id"];
-            var td = $("<td><a href='#' onclick='deleteTask(" + id + ")'>删除</a></td>");
-            td.appendTo(tr);
-        }
-        tr.appendTo(tbody);
+    json_str={};
+    var featureId=(point_feature[num])[0].id_;
+    var idArray=new Array();
+    idArray=featureId.split(".");
+    tname = data[num].getProperties();
+    var key = data[num].getKeys();
+    json_str.id=tname["id"];
+    json_str.type=tname["type"];
+    json_str.reason=tname["reason"];
+    json_str.date=tname["time"];
+    json_str.pipetype=idArray[0];
+    json_str.pipetype_geopoint=idArray[1];
+    json_str.back=null;
+    json_str.back_date=null;
+    switch(backCondition)
+    {
+        case "add":
+            fetch('http://172.31.164.58:8080/mobile',{
+                method:'POST',
+                mode:'cors',
+                headers:{'Content-TYPE':'application/json'},
+                body:JSON.stringify(json_str)
+            }).then( function (data) {
+                alert(data.toString())
+            }).catch(function (err) {
+                console.log(err)
+            });
+            break;
+        case "delete":
+            fetch('http://172.31.164.58:8080/mobile',{
+                method:'POST',
+                mode:'cors',
+                headers:{'Content-TYPE':'application/json'},
+                body:JSON.stringify(json_str)
+            }).then( function (data) {
+                alert(data.toString())
+            }).catch(function (err) {
+                console.log(err)
+            });
+            break;
+        default:
+            break;
     }
+}
+
+$('#task_send').on('click',function () {
+    alert("任务提交成功！");
 })
 
 /******************************属性查询************************************/
@@ -841,29 +843,72 @@ layername[3]="water_line";
 layername[4]="communication_line";
 layername[5]="rain_line";
 
-$('#btn_search').on('click',function () {
-    var location_like=document.getElementById("search_reason").value;
+var condition=new Array();
+condition[0]="loaction";
+condition[1]="last_check";
+condition[2]="condition";
+
+$('#property_btn_query').on('click',function () {
+    var property=document.getElementById("property_input_condition").value;
     var select_layer=document.getElementById("selectLayerName").value;
+    var selectCondition=document.getElementById("selectCondition").value;
     var layerName=layername[select_layer];
-    var property="location";
-    var queryRequest = featureRequest("DigitalWebPipe", layerName, location_like);
-    console.log(typeof XMLSerializer);
-    fetch('http://localhost:8080/geoserver/wfs', {
+    var condition_select=condition[selectCondition];
+    var queryRequest = featureRequest("DigitalWebPipe", layerName,condition_select, property);
+    console.log(queryRequest);
+    fetch('http://119.23.244.169:8081/geoserver/wfs', {
         method: 'POST',
         body: new XMLSerializer().serializeToString(queryRequest)
     }).then(function (response) {
         return response.json();
     }).then(function (json) {
         var features = new ol.format.GeoJSON().readFeatures(json);
-        addtable(features,"selectByproperty");
+        addtable(features);
     });
 })
+
+function addtable(data)
+{
+    var div;
+    var table;
+    div = $("#condition_table");
+    div.empty();
+    table=$("<table class='table table-property'></table>");
+    table.appendTo($("#condition_table"));
+    var rowCount=data.length;
+    var thead=$("<thead></thead>");
+    thead.appendTo(table);
+    var tr=$("<tr></tr>");
+    tr.appendTo(thead);
+    var key = data[0].getKeys();
+    for(var ti in key){
+        if(key[ti] != "geometry"){
+            var td=$("<th>"+key[ti]+"</th>");
+            td.appendTo(tr);
+        }
+    }
+    var tbody=$("<tbody></tbody>");
+    tbody.appendTo(table);
+    for(var i=0;i<rowCount;i++)
+    {
+        var tname = data[i];
+        tname = tname.getProperties();
+        var tr=$("<tr></tr>");
+        tr.appendTo(tbody);
+        for(var value in tname)
+            if (value != "geometry") {
+                var td = $("<td>" + tname[value] + "</td>");
+                td.appendTo(tr);
+            }
+    }
+    tr.appendTo(tbody);
+}
 
 var featureRequest = function(naspace,layername,propertyname,propertytext) {
     return new ol.format.WFS().writeGetFeature({
         srsName: 'EPSG:4326',                  ///参照系
-        featureNS: 'GIS_DATA', ///命名空间URI
-        featurePrefix: DigitalWebPipe,             //
+        featureNS: 'DigitalWebPipe', ///命名空间URI
+        featurePrefix: naspace,             //
         featureTypes: [layername],           ///图层名
         outputFormat: 'application/json',
         filter: ol.format.filter.equalTo(propertyname,propertytext)
