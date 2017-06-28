@@ -783,6 +783,29 @@ $('#task_panel_close').on('click',function () {
     document.getElementById("task_panel").style.display='none';
 })
 
+$('#task_send').on('click',function () {
+    var json_str;
+    var rowCount=data.length;
+    for(var i=0;i<rowCount;i++) {
+        if (data[i] != null) {
+            var tname = data[i];
+            tname = tname.getProperties();
+            var tr = $("<tr></tr>");
+            tr.appendTo(tbody);
+            for (var value in tname) {
+                if (value != "geometry") {
+                    var td = $("<td>" + tname[value] + "</td>");
+                    td.appendTo(tr);
+                }
+            }
+            var id = tname["id"];
+            var td = $("<td><a href='#' onclick='deleteTask(" + id + ")'>删除</a></td>");
+            td.appendTo(tr);
+        }
+        tr.appendTo(tbody);
+    }
+})
+
 /******************************属性查询************************************/
 var selectsource=new ol.source.Vector();
 var seleclayer=new ol.layer.Vector({
@@ -792,17 +815,17 @@ var seleclayer=new ol.layer.Vector({
     style: function(feature, resolution) {
         return new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: '#444444',
-                width: 2
+                color: '#000000',
+                width: 4
             }),
             fill:new ol.style.Stroke({
-                color:'#444444',
-                width:2
+                color:'#000000',
+                width:4
             }),
             image: new ol.style.Circle({
                 radius: 7,
                 fill: new ol.style.Fill({
-                    color: '#444444'
+                    color: '#000000'
                 })
             })
         });
@@ -810,12 +833,20 @@ var seleclayer=new ol.layer.Vector({
 })
 map.addLayer(seleclayer);
 
+var layername=new Array();
+layername[0]="gas_line";
+layername[1]="waste_line";
+layername[2]="electric_line";
+layername[3]="water_line";
+layername[4]="communication_line";
+layername[5]="rain_line";
+
 $('#btn_search').on('click',function () {
     var location_like=document.getElementById("search_reason").value;
-    var layers="GIS_DATA:污水线_2";
-    var layerArr=layers.split(":");
+    var select_layer=document.getElementById("selectLayerName").value;
+    var layerName=layername[select_layer];
     var property="location";
-    var queryRequest = featureRequest(layerArr[0], layerArr[1],property, location_like);
+    var queryRequest = featureRequest("DigitalWebPipe", layerName, location_like);
     console.log(typeof XMLSerializer);
     fetch('http://localhost:8080/geoserver/wfs', {
         method: 'POST',
@@ -832,7 +863,7 @@ var featureRequest = function(naspace,layername,propertyname,propertytext) {
     return new ol.format.WFS().writeGetFeature({
         srsName: 'EPSG:4326',                  ///参照系
         featureNS: 'GIS_DATA', ///命名空间URI
-        featurePrefix: naspace,             //
+        featurePrefix: DigitalWebPipe,             //
         featureTypes: [layername],           ///图层名
         outputFormat: 'application/json',
         filter: ol.format.filter.equalTo(propertyname,propertytext)
