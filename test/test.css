@@ -1,6 +1,8 @@
 html{
     overflow: hidden;
 }
+
+/*地图显示*/
 a.skiplink {
     position: absolute;
     clip: rect(1px, 1px, 1px, 1px);
@@ -35,10 +37,14 @@ a.skiplink:focus {
     width: 100%;
     top: 52px;
 }
+
+/*天气logo*/
 .iframe-weather{
     position: absolute;
     left: 1120px;
 }
+
+/*控制面板*/
 #control_panel{
     position: absolute;
 }
@@ -57,6 +63,9 @@ a.skiplink:focus {
     background-color: rgba(34, 34, 34,1);
 }
 #btn_spatial{
+    background-color: rgba(34, 34, 34, 1);
+}
+#btn_edit{
     background-color: rgba(34, 34, 34, 1);
 }
 #btn_picture{
@@ -92,40 +101,34 @@ a.skiplink:focus {
     top: 55px;
     left: 30px;
 }
+#form_selectproperty{
+    width: 210px;
+    position: absolute;
+    top: 130px;
+    left: 30px;
+}
 #form_inputproperty{
     position: absolute;
-    top: 150px;
+    top: 230px;
     left: 30px;
     width: 210px;
 }
-.table-property{
-    position: absolute;
-    top: 200px;
-    left: 10px;
-    width: 250px;
-}
-#square_query{
+
+#spatial_btn_square{
     position: absolute;
     width: 150px;
     height: 30px;
     left: 50px;
     top: 60px;
 }
-#click_query{
-    position: absolute;
-    width: 150px;
-    height: 30px;
-    top: 110px;
-    left: 50px;
-}
+
 #task_panel{
-    display: none;
-    position: fixed;
     display: block;
-    top: 80px;
-    left: 1070px;
-    height: 330px;
-    width: 250px;
+    position: fixed;
+    top: 53px;
+    left: 1135px;
+    height: 343px;
+    width: 230px;
     font-family: "微软雅黑";
 }
 #task_panel_close{
@@ -133,31 +136,94 @@ a.skiplink:focus {
     top: 11px;
     right: 9px;
 }
-#task_type{
-    position: absolute;
-    top: 20px;
-}
-#task_reason{
-    position: absolute;
-    top: 73px;
-}
-#task_time{
-    position: absolute;
-    top: 125px;
-}
 #task_submit{
+     position: absolute;
+     left: 110px;
+     top: 240px;
+     width: 70px;
+ }
+#task_arrange{
     position: absolute;
-    top: 170px;
-    left: 100px;
-    width: 100px;
+    width: 200px;
+    left: 30px;
 }
-#task_table{
+#task_send{
     position: absolute;
-    top: 100px;
-    left: 10px;
+    top: 500px;
+    left: 30px;
+    width: 200px;
+}
+#form_task{
+    position: absolute;
+    width: 225px;
+    left: 20px;
+}
+.task-well{
+    position: absolute;
+    top: 150px;
+    height: 300px;
+    background-color: white;
+    left: 8px;
     width: 250px;
 }
-.ol-dragbox {
-    background-color: rgba(255,255,255,0.4);
-    border-color: rgba(100,150,0,1);
+.task-table{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 248px;
 }
+#edit_btn_choose{
+    position: absolute;
+    width: 150px;
+    height: 30px;
+    top: 60px;
+    left: 50px;
+}
+#form_edit{
+    position: absolute;
+    top: 105px;
+    width: 225px;
+    left: 20px;
+}
+#edit_btn_OK{
+    position: absolute;
+    left: 20px;
+    width: 70px;
+}
+#edit_btn_cancel{
+    position: absolute;
+    left: 130px;
+    width: 70px;
+}
+
+
+
+
+.result-panel{
+    position: absolute;
+    display:none;
+    width: 350px;
+    top: 330px;
+    left: 1370px;
+    height: 250px;
+    overflow-y: auto;
+    font-family: "微软雅黑";
+}
+.btn-result-close{
+    position: absolute;
+    top: 11px;
+    left: 320px;
+}
+#result_panel{
+    position: absolute;
+}
+#spatial_result{
+    position: absolute;
+}
+.table-property{
+    position: absolute;
+    top: 40px;
+    left: 16px;
+    width: 320px;
+}
+

@@ -9,7 +9,7 @@
     <script src="jquery.min.js"></script>
     <script src="bootstrap.min.js"></script>
     <script src="Main.js"></script>
-    <script src="polyfill.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="../app/lib/polyfill.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="ol-debug.js"></script>
 </head>
 <body>
@@ -29,6 +29,81 @@
 </div>
 
 
+
+
+<!--     查询结果面板    -->
+<div id="result_panel">
+
+    <!--     条件查询显示    -->
+    <div id="property_result" class="panel panel-default result-panel">
+        <div id="property_result_close" class="btn-result-close">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+        </div>
+        <div class="panel-heading ">条件查询结果</div>
+        <div class="panel-body " >
+            <div class="container">
+                <table id="condition_table" class="table table-property">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>位置</th>
+                        <th>上次检修</th>
+                        <th>损坏状况</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="active">
+                        <td>1</td>
+                        <td>公主楼</td>
+                        <td>2017.06.20</td>
+                        <td>良好</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--   空间查询显示   -->
+    <div id="spatial_result" class="panel panel-default result-panel">
+        <div id="spatial_result_close" class="btn-result-close">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+        </div>
+        <div class="panel-heading ">空间查询结果</div>
+        <div class="panel-body " >
+            <div class="container" >
+                <table id="spatial_table" class="table table-property" >
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>位置</th>
+                        <th>上次检修</th>
+                        <th>损坏状况</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="active">
+                        <td>1</td>
+                        <td>公主楼</td>
+                        <td>2017.06.20</td>
+                        <td>良好</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
 <!--  控制面板 -->
 <div id="control_panel">
 
@@ -42,6 +117,9 @@
         </button>
         <button id="btn_spatial" type="button" class="btn btn-sm " data-toggle="tooltip" data-placement="right" title="spatial" >
             <span class="glyphicon glyphicon-search btn-logo"></span>
+        </button>
+        <button id="btn_edit" type="button" class="btn btn-sm " data-toggle="tooltip" data-placement="right" title="edit" >
+            <span class="glyphicon glyphicon-pencil btn-logo"></span>
         </button>
         <button id="btn_task"type="button" class="btn  btn-sm " data-toggle="tooltip" data-placement="right" title="task" >
             <span class="glyphicon glyphicon-flag btn-logo"></span>
@@ -89,46 +167,33 @@
     <div id="property" class=" panel panel-default control-panel">
         <div class="panel-heading">属性查询</div>
         <div class="panel-body">    </div>
+
         <form role="form" class="bs-example bs-example-form">
             <div id="form_selectlayer" class="form-group ">
-                <label><!--for="name"-->选择图层</label>
-                <select class="form-control" id="selectLayerName">
-                    <option value="0">天然气</option>
-                    <option value="1">污水</option>
-                    <option value="2">电力</option>
-                    <option value="3">给水</option>
-                    <option value="4">通讯</option>
-                    <option value="5">雨水</option>
+                <label>选择图层</label>
+                <select class="form-control">
+                    <option>水网</option>
+                    <option>电网</option>
+                    <option>通讯网</option>
+                </select>
+            </div>
+            <div id="form_selectproperty" class="form-group ">
+                <label>选择属性</label>
+                <select class="form-control">
+                    <option>位置</option>
+                    <option>时间</option>
+                    <option>状况</option>
                 </select>
             </div>
             <div id="form_inputproperty"class="input-group">
-                <label style="position: absolute;top: -24px;left: 2px;"><!-- for="name"-->输入条件</label>
-                <input type="text" id="search_reason" class="form-control">
+                <label style="position: absolute;top: -24px;left: 2px;">输入条件</label>
+                <input id="property_input_condition" type="text" class="form-control">
                 <span class="input-group-btn">
-						<button class="btn btn-default" id="btn_search" type="button">查询</button>
+						<button id="property_btn_query" class="btn btn-default" type="button">查询</button>
                 </span>
             </div>
         </form>
-        <div class="container" id="selectByproperty">
-            <table class="table table-property">
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>位置</th>
-                    <th>上次检修</th>
-                    <th>损坏状况</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="active">
-                    <td>1</td>
-                    <td>公主楼</td>
-                    <td>2017.06.20</td>
-                    <td>良好</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+
         <div id="property_close" class="btn-close">
             <span class="glyphicon glyphicon-remove-sign"></span>
         </div>
@@ -139,74 +204,81 @@
     <div id="spatial" class=" panel panel-default control-panel">
         <div class="panel-heading">空间查询</div>
         <div class="panel-body">
-            <button id="square_query" class="btn btn-default btn-xs"  data-placement="right" >
+            <button id="spatial_btn_square" class="btn btn-default btn-sm" >
                 <span class="glyphicon glyphicon-unchecked"></span>  拉框查询
             </button>
-            <button id="click_query" class="btn btn-default btn-xs"  data-placement="right">
-                <span class="glyphicon glyphicon-hand-up"></span>  点击查询
-            </button>
-            <div class="container" id="selectTable">
-                <table class="table table-property" >
-                    <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>位置</th>
-                        <th>上次检修</th>
-                        <th>损坏状况</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="active">
-                        <td>1</td>
-                        <td>公主楼</td>
-                        <td>2017.06.20</td>
-                        <td>良好</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
         <div id="spatial_close" class="btn-close">
             <span class="glyphicon glyphicon-remove-sign"></span>
         </div>
     </div>
 
-    <!--   -----------------------------------------------布置任务-----------------------------------------------------  -->
 
-    <!--  布置任务面板 -->
-    <div id="task_panel" class="panel panel-default" style="display: none">
-        <div id="task_panel_close" >
+    <!--  编辑要素 -->
+    <div id="edit" class=" panel panel-default control-panel">
+        <div class="panel-heading">编辑要素</div>
+        <div class="panel-body">
+
+            <button id="edit_btn_choose" class="btn btn-default btn-sm"  data-placement="right">选择要素</button>
+
+            <div id="form_edit" class="bs-example bs-example-form" role="form">
+                <label>位置</label>
+                <div class="input-group">
+                    <span class="input-group-addon ">➹</span>
+                    <input type="text" class="form-control" >
+                </div>
+                <br/>
+                <label>上次检查时间</label>
+                <div class="input-group">
+                    <span class="input-group-addon ">㏂</span>
+                    <input type="text" class="form-control">
+                </div>
+                <br/>
+                <label>状况</label>
+                <div class="input-group">
+                    <span class="input-group-addon ">☺</span>
+                    <input type="text" class="form-control">
+                </div>
+                <br/>
+                <br/>
+                <button id="edit_btn_OK" class="btn btn-default btn-sm" >修改</button>
+                <button id="edit_btn_cancel" class="btn btn-default btn-sm">取消</button>
+            </div>
+
+        </div>
+        <div id="edit_close" class="btn-close">
             <span class="glyphicon glyphicon-remove-sign"></span>
         </div>
-        <div class="panel-heading">布置任务</div>
-        <div class="panel-body">
-                <div class="form-group">
-                    <label   style="top: 48px;left: 13px;position: absolute;">管道类型</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="task_type"
-                               placeholder="如：水网">
-                    </div>
+    </div>
+
+
+    <!--   -----------------------------------------------布置任务-----------------------------------------------------  -->
+
+    <!--  布置任务   -->
+    <div id="task_panel" class="panel panel-default task-panel">
+        <div id="task_panel_close" style="position: absolute;top: 10px;left: 203px;">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+        </div>
+        <div class="panel-heading ">布置任务</div>
+        <div class="panel-body " >
+            <div id="form_task" class="bs-example bs-example-form" role="form">
+                <label >管道类型</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="task_type" placeholder="如：水网">
                 </div>
-                <div class="form-group">
-                    <label  style="position: absolute;top: 117px;left: 14px;">检查原因</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="task_reason"
-                               placeholder="如：爆管">
-                    </div>
+                <br/>
+                <label >检查原因</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="task_reason" placeholder="如：爆管">
                 </div>
-                <div class="form-group">
-                    <label  style="position: absolute;top: 185px;left: 14px;">检查时间</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="task_time"
-                               placeholder="如：2017年6月20日">
-                    </div>
+                <br/>
+                <label >检查时间</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="task_time" placeholder="如：2017年6月20日">
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button id="task_submit" class="btn btn-default">提交</button>
-                    </div>
-                </div>
-            <
+                <br/>
+                <button id="task_submit" class="btn btn-default btn-sm">提交</button>
+            </div>
         </div>
     </div>
 
@@ -219,33 +291,38 @@
         <div class="panel-heading">当前任务</div>
         <div class="panel-body">
 
-            <button id="task_arrange" class="btn btn-default btn-xs"  data-placement="right" >
-                <span class="glyphicon glyphicon-send"></span>开始布置任务
+            <button id="task_arrange" class="btn btn-default btn-sm" >
+                <span class="glyphicon glyphicon-tag"></span>开始布置任务
+            </button>
+            <button id="task_send" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-send"></span>发送任务
             </button>
 
-            <table id="task_table"class="table">
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>管道类型</th>
-                    <th>检查原因</th>
-                    <th>检查时间</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="active">
-                    <td>1</td>
-                    <td>供水</td>
-                    <td>公主楼</td>
-                    <td>2017.06.20</td>
-                </tr>
-                </tbody>
-            </table>
+            <!--  显示任务面板 -->
+            <div  class="well task-well" >
+                <div class="container" >
+                    <table id="task_table"class="table task-table">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>类型</th>
+                            <th>原因</th>
+                            <th>时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="active">
+                            <td>1</td>
+                            <td>供水</td>
+                            <td>爆管</td>
+                            <td>2017.06.20</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
-        <button id="task_send" class="btn btn-default btn-xs"  data-placement="right" >
-            <span class="glyphicon glyphicon-send"></span>发送任务
-        </button>
     </div>
 
 
@@ -326,7 +403,6 @@
         </div>
     </div>
 </div>
-<div id="mouse-position" style="position: absolute;z-index: 3000"></div>
 
 
 
@@ -354,12 +430,25 @@
         $('#control_panel').animate({left:'0px'},1);
         $("#pictures").css("display","none");
     });
+    $('#edit_close').click(function(){
+        $('#control_panel').animate({left:'0px'},1);
+        $("#edit").css("display","none");
+    });
+    $('#edit_cancel').click(function(){
+        $('#control_panel').animate({left:'0px'},1);
+        $("#edit").css("display","none");
+    });
 
     $('#btn_layers').click(function(){//图层
+        $('#result_panel').animate({left:'360px'},1);
+        $("#property_result").css("display","none");
+        $("#spatial_result").css("display","none");
+        /*-------------------------------------------*/
         if($("#layers").css("display")=="none"){
             $("#layers").css("display","block");
             $("#property").css("display","none");
             $("#spatial").css("display","none");
+            $("#edit").css("display","none");
             $("#task").css("display","none");
             $("#pictures").css("display","none");
             $('#control_panel').animate({left:'270px'},500);
@@ -375,6 +464,7 @@
             $("#property").css("display","block");
             $("#layers").css("display","none");
             $("#spatial").css("display","none");
+            $("#edit").css("display","none");
             $("#task").css("display","none");
             $("#pictures").css("display","none");
             $('#control_panel').animate({left:'270px'},500);
@@ -390,6 +480,7 @@
             $("#spatial").css("display","block");
             $("#layers").css("display","none");
             $("#property").css("display","none");
+            $("#edit").css("display","none");
             $("#task").css("display","none");
             $("#pictures").css("display","none");
             $('#control_panel').animate({left:'270px'},500);
@@ -400,12 +491,37 @@
         }
     });
 
+    $('#btn_edit').click(function(){//编辑要素
+        $('#result_panel').animate({left:'360px'},1);
+        $("#property_result").css("display","none");
+        $("#spatial_result").css("display","none");
+        /*---------------------------------------------*/
+        if($("#edit").css("display")=="none"){
+            $("#edit").css("display","block");
+            $("#layers").css("display","none");
+            $("#property").css("display","none");
+            $("#spatial").css("display","none");
+            $("#task").css("display","none");
+            $("#pictures").css("display","none");
+            $('#control_panel').animate({left:'270px'},500);
+        }
+        else{
+            $('#control_panel').animate({left:'0px'},1);
+            $("#edit").css("display","none");
+        }
+    });
+
     $('#btn_task').click(function(){//任务
+        $('#result_panel').animate({left:'360px'},1);
+        $("#property_result").css("display","none");
+        $("#spatial_result").css("display","none");
+        /*---------------------------------------------*/
         if($("#task").css("display")=="none"){
             $("#task").css("display","block");
             $("#layers").css("display","none");
             $("#property").css("display","none");
             $("#spatial").css("display","none");
+            $("#edit").css("display","none");
             $("#pictures").css("display","none");
             $('#control_panel').animate({left:'270px'},500);
         }
@@ -415,12 +531,17 @@
         }
     });
 
-    $('#btn_picture').click(function(){//任务
+    $('#btn_picture').click(function(){//图片
+        $('#result_panel').animate({left:'360px'},1);
+        $("#property_result").css("display","none");
+        $("#spatial_result").css("display","none");
+        /*---------------------------------------------*/
         if($("#pictures").css("display")=="none"){
             $("#pictures").css("display","block");
             $("#layers").css("display","none");
             $("#property").css("display","none");
             $("#spatial").css("display","none");
+            $("#edit").css("display","none");
             $("#task").css("display","none");
             $('#control_panel').animate({left:'270px'},500);
         }
@@ -429,6 +550,44 @@
             $("#pictures").css("display","none");
         }
     });
+
+/* -----------------------------------查询结果显示------------------------------------------------*/
+
+/*条件查询显示*/
+    $('#property_btn_query').click(function(){
+        if($("#property_result").css("display")=="none") {
+            $("#property_result").css("display","block");
+            $("#spatial_result").css("display","none");
+            $('#result_panel').animate({left: '-360px'}, 500);
+        }
+    });
+    $('#property_result_close').click(function(){
+        $('#result_panel').animate({left:'360px'},1);
+        $("#property_result").css("display","none");
+    });
+
+/*空间查询显示*/
+    $('#spatial_btn_square').click(function(){
+        if($("#spatial_result").css("display")=="none") {
+            $("#spatial_result").css("display","block");
+            $("#property_result").css("display","none");
+            $('#result_panel').animate({left: '-360px'}, 500);
+        }
+    });
+    $('#spatial_result_close').click(function(){
+        $('#result_panel').animate({left:'360px'},1);
+        $("#spatial_result").css("display","none");
+    });
+
+
+
+
+    $('#result_panel').animate({left:'360px'},1);
+    $("#property_result").css("display","none");
+    $("#spatial_result").css("display","none");
+
+
+
 
 
 </script>
