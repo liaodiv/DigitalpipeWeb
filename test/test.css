@@ -41,7 +41,7 @@ a.skiplink:focus {
 /*天气logo*/
 .iframe-weather{
     position: absolute;
-    left: 1120px;
+    left:1280px;
 }
 
 /*控制面板*/
@@ -90,7 +90,7 @@ a.skiplink:focus {
     width: 310px;
     top: -20px;
     left: -310px;
-    height: 620px;
+    height: 710px;
     overflow-y: auto;
     font-family: "微软雅黑";
     z-index: 1;
@@ -127,7 +127,7 @@ a.skiplink:focus {
     display: none;
     position: fixed;
     top: 53px;
-    left: 1135px;
+    left: 1285px;
     height: 343px;
     width: 230px;
     font-family: "微软雅黑";
@@ -203,8 +203,8 @@ a.skiplink:focus {
     position: absolute;
     display:none;
     width: 350px;
-    top: 330px;
-    left: 1370px;
+    top: 430px;
+    left: 1535px;
     height: 250px;
     overflow-y: auto;
     font-family: "微软雅黑";
