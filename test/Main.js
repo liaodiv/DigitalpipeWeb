@@ -680,7 +680,7 @@ function addTask(data)
     }
     if(j==rowCount)
         return;
-    var td = $("<th>删除任务</th>");
+    var td = $("<th>delete</th>");
     td.appendTo(tr);
     var tbody=$("<tbody></tbody>");
     tbody.appendTo(table);

@@ -40,9 +40,9 @@
             <span class="glyphicon glyphicon-remove-sign"></span>
         </div>
         <div class="panel-heading ">条件查询结果</div>
-        <div class="panel-body " >
-            <div class="container">
-                <table id="condition_table" class="table table-property">
+        <div class="panel-body body" >
+            <div class="container" id="condition_table">
+                <table  class="table table-property">
                     <thead>
                     <tr>
                         <th>id</th>
@@ -70,9 +70,9 @@
             <span class="glyphicon glyphicon-remove-sign"></span>
         </div>
         <div class="panel-heading ">空间查询结果</div>
-        <div class="panel-body " >
-            <div class="container" >
-                <table id="spatial_table" class="table table-property" >
+        <div class="panel-body body" >
+            <div class="container" id="spatial_table" >
+                <table  class="table table-property" >
                     <thead>
                     <tr>
                         <th>id</th>
@@ -133,29 +133,44 @@
     <!--  图层管理 -->
     <div id="layers" class="panel panel-default control-panel" >
         <div class="panel-heading ">图层管理</div>
-        <div class="panel-body " >
+        <div class="panel-body" >
             <div id="layerControl" style="position: absolute;top:60px;left:85px">
                 <ul id="layerTree" class="layerTree"></ul>
             </div>
             <div id="btn_group_editlayer" class="btn-group-vertical">
-                <button id="editlayer1" class="btn btn-default btn-xs"  data-placement="right" title="edit" >
+                <button id="editlayer1" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="top:56px">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
-                <button id="editlayer2" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="position:absolute;top:56px">
+                <button id="editlayer2" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="position:absolute;top:169px">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
-                <button id="editlayer3" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="position:absolute;top:113px">
+                <button id="editlayer3" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="position:absolute;top:283px">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
-                <button id="editlayer4" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="position:absolute;top:168px">
+                <button id="editlayer4" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="position:absolute;top:398px">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
+                <button id="editlayer5" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="position:absolute;top:509px">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+                <button id="editlayer6" class="btn btn-default btn-xs"  data-placement="right" title="edit" style="position:absolute;top:622px">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+
             </div>
             <img src="image/世界地图.png" class="img-thumbnail" alt="Cinque Terre" style="position:absolute;top:51px"><br/>
-            <img src="image/水网.png" class="img-thumbnail" alt="Cinque Terre" style="position:absolute;top:108px"><br/>
-            <img src="image/电网.png"class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:165px"><br/>
-            <img src="image/通讯网.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:222px"><br/>
-            <img src="image/天然气.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:278px"><br/>
+            <img src="image/天然气点.png" class="img-thumbnail" alt="Cinque Terre" style="position:absolute;top:108px"><br/>
+            <img src="image/天然气网.png"class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:165px"><br/>
+            <img src="image/污水点.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:222px"><br/>
+            <img src="image/污水网.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:278px"><br/>
+            <img src="image/电力点.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:334px"><br/>
+            <img src="image/电力网.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:391px"><br/>
+            <img src="image/给水点.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:448px"><br/>
+            <img src="image/给水网.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:505px"><br/>
+            <img src="image/通讯点.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:562px"><br/>
+            <img src="image/通讯网.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:619px"><br/>
+            <img src="image/雨水点.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:675px"><br/>
+            <img src="image/雨水网.png" class="img-thumbnail" alt="Cinque Terre"style="position:absolute;top:732px"><br/>
             <div id="layers_close" class="btn-close">
                 <span class="glyphicon glyphicon-remove-sign"></span>
             </div>
@@ -171,18 +186,21 @@
         <form role="form" class="bs-example bs-example-form">
             <div id="form_selectlayer" class="form-group ">
                 <label>选择图层</label>
-                <select class="form-control">
-                    <option>水网</option>
-                    <option>电网</option>
-                    <option>通讯网</option>
+                <select class="form-control" id="selectLayerName">
+                    <option value="0">天然气</option>
+                    <option value="1">污水</option>
+                    <option value="2">电力</option>
+                    <option value="3">给水</option>
+                    <option value="4">通讯</option>
+                    <option value="5">雨水</option>
                 </select>
             </div>
             <div id="form_selectproperty" class="form-group ">
                 <label>选择属性</label>
-                <select class="form-control">
-                    <option>位置</option>
-                    <option>时间</option>
-                    <option>状况</option>
+                <select class="form-control" id="selectCondition">
+                    <option value="0">位置</option>
+                    <option value="1">时间</option>
+                    <option value="2">状况</option>
                 </select>
             </div>
             <div id="form_inputproperty"class="input-group">
@@ -203,7 +221,7 @@
     <!--  空间查询 -->
     <div id="spatial" class=" panel panel-default control-panel">
         <div class="panel-heading">空间查询</div>
-        <div class="panel-body">
+        <div class="panel-body ">
             <button id="spatial_btn_square" class="btn btn-default btn-sm" >
                 <span class="glyphicon glyphicon-unchecked"></span>  拉框查询
             </button>
@@ -225,19 +243,19 @@
                 <label>位置</label>
                 <div class="input-group">
                     <span class="input-group-addon ">➹</span>
-                    <input type="text" class="form-control" >
+                    <input type="text" class="form-control" id="singleClick_location" >
                 </div>
                 <br/>
                 <label>上次检查时间</label>
                 <div class="input-group">
                     <span class="input-group-addon ">㏂</span>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" id="singleClick_last_check">
                 </div>
                 <br/>
                 <label>状况</label>
                 <div class="input-group">
                     <span class="input-group-addon ">☺</span>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" id="singleClick_condition">
                 </div>
                 <br/>
                 <br/>
@@ -289,7 +307,7 @@
         </div>
 
         <div class="panel-heading">当前任务</div>
-        <div class="panel-body">
+        <div class="panel-body ">
 
             <button id="task_arrange" class="btn btn-default btn-sm" >
                 <span class="glyphicon glyphicon-tag"></span>开始布置任务
@@ -336,7 +354,7 @@
         </div>
         <div class="panel-body">
             <p>白天</p>
-            <div id="pictures_carousel1"class="carousel slide" style="position: absolute;z-index: 3;height: 162px;width: 240px;top:80px;">
+            <div id="pictures_carousel1"class="carousel slide" style="position: absolute;z-index: 3;height: 180px;width: 270px;top:80px;">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
                     <li data-target="#pictures_carousel1" data-slide-to="0" class="active"></li>
@@ -374,7 +392,7 @@
             </div>
 
             <p style="position:absolute;top:290px;">夜晚</p>
-            <div id="pictures_carousel2"class="carousel slide" style="position: absolute;z-index: 3;height: 162px;width: 240px;top:320px">
+            <div id="pictures_carousel2"class="carousel slide" style="position: absolute;z-index: 3;height: 180px;width: 270px;top:320px">
                 <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
                     <li data-target="#pictures_carousel2" data-slide-to="0" class="active"></li>
@@ -451,7 +469,7 @@
             $("#edit").css("display","none");
             $("#task").css("display","none");
             $("#pictures").css("display","none");
-            $('#control_panel').animate({left:'270px'},500);
+            $('#control_panel').animate({left:'310px'},500);
         }
         else{
             $('#control_panel').animate({left:'0px'},1);
@@ -467,7 +485,7 @@
             $("#edit").css("display","none");
             $("#task").css("display","none");
             $("#pictures").css("display","none");
-            $('#control_panel').animate({left:'270px'},500);
+            $('#control_panel').animate({left:'310px'},500);
         }
         else{
             $('#control_panel').animate({left:'0px'},1);
@@ -483,7 +501,7 @@
             $("#edit").css("display","none");
             $("#task").css("display","none");
             $("#pictures").css("display","none");
-            $('#control_panel').animate({left:'270px'},500);
+            $('#control_panel').animate({left:'310px'},500);
         }
         else{
             $('#control_panel').animate({left:'0px'},1);
@@ -503,7 +521,7 @@
             $("#spatial").css("display","none");
             $("#task").css("display","none");
             $("#pictures").css("display","none");
-            $('#control_panel').animate({left:'270px'},500);
+            $('#control_panel').animate({left:'310px'},500);
         }
         else{
             $('#control_panel').animate({left:'0px'},1);
@@ -523,7 +541,7 @@
             $("#spatial").css("display","none");
             $("#edit").css("display","none");
             $("#pictures").css("display","none");
-            $('#control_panel').animate({left:'270px'},500);
+            $('#control_panel').animate({left:'310px'},500);
         }
         else{
             $('#control_panel').animate({left:'0px'},1);
@@ -543,7 +561,7 @@
             $("#spatial").css("display","none");
             $("#edit").css("display","none");
             $("#task").css("display","none");
-            $('#control_panel').animate({left:'270px'},500);
+            $('#control_panel').animate({left:'310px'},500);
         }
         else{
             $('#control_panel').animate({left:'0px'},1);
@@ -580,11 +598,6 @@
     });
 
 
-
-
-    $('#result_panel').animate({left:'360px'},1);
-    $("#property_result").css("display","none");
-    $("#spatial_result").css("display","none");
 
 
 

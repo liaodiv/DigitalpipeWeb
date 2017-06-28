@@ -77,32 +77,33 @@ a.skiplink:focus {
 #btn_group_editlayer{
     position: absolute;
     top: 125px;
-    left: 215px;
+    left: 235px;
 }
 .btn-close{
     position: absolute;
-    top: 12px;
-    left: 236px;
+    top: 10px;
+    left: 280px;
 }
 .control-panel{
     position: absolute;
     display: none;
-    width: 270px;
+    width: 310px;
     top: -20px;
-    left: -270px;
+    left: -310px;
     height: 620px;
     overflow-y: auto;
     font-family: "微软雅黑";
     z-index: 1;
 }
+
 #form_selectlayer{
-    width: 210px;
+    width: 245px;
     position: absolute;
     top: 55px;
     left: 30px;
 }
 #form_selectproperty{
-    width: 210px;
+    width: 245px;
     position: absolute;
     top: 130px;
     left: 30px;
@@ -111,19 +112,19 @@ a.skiplink:focus {
     position: absolute;
     top: 230px;
     left: 30px;
-    width: 210px;
+    width: 245px;
 }
 
 #spatial_btn_square{
     position: absolute;
-    width: 150px;
+    width: 210px;
     height: 30px;
     left: 50px;
     top: 60px;
 }
 
 #task_panel{
-    display: block;
+    display: none;
     position: fixed;
     top: 53px;
     left: 1135px;
@@ -145,12 +146,12 @@ a.skiplink:focus {
 #task_arrange{
     position: absolute;
     width: 200px;
-    left: 30px;
+    left: 50px;
 }
 #task_send{
     position: absolute;
     top: 500px;
-    left: 30px;
+    left: 50px;
     width: 200px;
 }
 #form_task{
@@ -163,18 +164,19 @@ a.skiplink:focus {
     top: 150px;
     height: 300px;
     background-color: white;
-    left: 8px;
-    width: 250px;
+    left: 3px;
+    width: 300px;
+    overflow-y: auto;
 }
 .task-table{
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 248px;
+    width: 210px;
 }
 #edit_btn_choose{
     position: absolute;
-    width: 150px;
+    width: 200px;
     height: 30px;
     top: 60px;
     left: 50px;
@@ -182,21 +184,19 @@ a.skiplink:focus {
 #form_edit{
     position: absolute;
     top: 105px;
-    width: 225px;
+    width: 260px;
     left: 20px;
 }
 #edit_btn_OK{
     position: absolute;
     left: 20px;
-    width: 70px;
+    width: 100px;
 }
 #edit_btn_cancel{
     position: absolute;
     left: 130px;
-    width: 70px;
+    width: 100px;
 }
-
-
 
 
 .result-panel{
@@ -226,4 +226,9 @@ a.skiplink:focus {
     left: 16px;
     width: 320px;
 }
+.ol-dragbox {
+    background-color: rgba(255,255,255,0.4);
+    border-color: rgba(100,150,0,1);
+}
+
 
