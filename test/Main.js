@@ -79,60 +79,60 @@ var map_layers_source=new Array();
 
 map_layers_source[1]=new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    url: 'http://119.23.244.169:8080/geoserver/wfs?' +
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalPipeWeb:天然气管道&' +
+    'typeNames=DigitalWebPipe:gas_line&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
 
 map_layers_source[2]=new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    url: 'http://119.23.244.169:8080/geoserver/wfs?' +
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalPipeWeb:污水管网&' +
+    'typeNames=DigitalWebPipe:waste_line&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
 
 map_layers_source[3]=new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    url: 'http://119.23.244.169:8080/geoserver/wfs?' +
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalPipeWeb:电网&' +
+    'typeNames=DigitalWebPipe:electric_line&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
 
 map_layers_source[4]=new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    url: 'http://119.23.244.169:8080/geoserver/wfs?' +
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalPipeWeb:给水管网&' +
+    'typeNames=DigitalWebPipe:water_line&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
 
 map_layers_source[5]=new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    url: 'http://119.23.244.169:8080/geoserver/wfs?' +
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalPipeWeb:通讯网&' +
+    'typeNames=DigitalWebPipe:communication_line&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
 
 map_layers_source[6]=new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    url: 'http://119.23.244.169:8080/geoserver/wfs?' +
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalPipeWeb:雨水管道&' +
+    'typeNames=DigitalWebPipe:rain_line&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
@@ -144,17 +144,17 @@ map_layers[1] =   new ol.layer.Vector({
     style: function(feature, resolution) {
         return new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: '#444444',
+                color: '#DEB887',
                 width: 2
             }),
             fill:new ol.style.Stroke({
-                color:'#444444',
+                color:'#DEB887',
                 width:2
             }),
             image: new ol.style.Circle({
                 radius: 7,
                 fill: new ol.style.Fill({
-                    color: '#444444'
+                    color: '#DEB887'
                 })
             })
         });
@@ -192,17 +192,17 @@ map_layers[3] =   new ol.layer.Vector({
     style: function(feature, resolution) {
         return new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: '#444444',
+                color: '#BDB76B',
                 width: 2
             }),
             fill:new ol.style.Stroke({
-                color:'#444444',
+                color:'#BDB76B',
                 width:2
             }),
             image: new ol.style.Circle({
                 radius: 7,
                 fill: new ol.style.Fill({
-                    color: '#444444'
+                    color: '#BDB76B'
                 })
             })
         });
@@ -216,17 +216,17 @@ map_layers[4] =   new ol.layer.Vector({
     style: function(feature, resolution) {
         return new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: '#444444',
+                color: '#1E90FF',
                 width: 2
             }),
             fill:new ol.style.Stroke({
-                color:'#444444',
+                color:'#1E90FF',
                 width:2
             }),
             image: new ol.style.Circle({
                 radius: 7,
                 fill: new ol.style.Fill({
-                    color: '#444444'
+                    color: '#1E90FF'
                 })
             })
         });
@@ -240,17 +240,17 @@ map_layers[5] =   new ol.layer.Vector({
     style: function(feature, resolution) {
         return new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: '#444444',
+                color: '#EEEE00',
                 width: 2
             }),
             fill:new ol.style.Stroke({
-                color:'#444444',
+                color:'#EEEE00',
                 width:2
             }),
             image: new ol.style.Circle({
                 radius: 7,
                 fill: new ol.style.Fill({
-                    color: '#444444'
+                    color: '#EEEE00'
                 })
             })
         });
@@ -264,17 +264,17 @@ map_layers[6] =   new ol.layer.Vector({
     style: function(feature, resolution) {
         return new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: '#444444',
+                color: '#7FFFD4',
                 width: 2
             }),
             fill:new ol.style.Stroke({
-                color:'#444444',
+                color:'#7FFFD4',
                 width:2
             }),
             image: new ol.style.Circle({
                 radius: 7,
                 fill: new ol.style.Fill({
-                    color: '#444444'
+                    color: '#7FFFD4'
                 })
             })
         });
