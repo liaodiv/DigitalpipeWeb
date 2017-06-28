@@ -77,6 +77,7 @@ function setInnerText(element, text) {
 /*****图层导入****/
 var map_layers=new Array();
 var map_layers_source=new Array();
+var map_layer_point_source=new Array();
 
 map_layers_source[1]=new ol.source.Vector({
     format: new ol.format.GeoJSON(),
@@ -138,7 +139,91 @@ map_layers_source[6]=new ol.source.Vector({
     'srsname=EPSG:4326'
 });
 
+map_layer_point_source[1]=new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
+    'service=wfs&version=1.0.0&' +
+    'request=GetFeature&' +
+    'typeNames=DigitalWebPipe:gas&' +
+    'outputFormat=application/json&' +
+    'srsname=EPSG:3857'
+});
+
+map_layer_point_source[2]=new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
+    'service=wfs&version=1.0.0&' +
+    'request=GetFeature&' +
+    'typeNames=DigitalWebPipe:waste&' +
+    'outputFormat=application/json&' +
+    'srsname=EPSG:3857'
+});
+
+map_layer_point_source[3]=new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
+    'service=wfs&version=1.0.0&' +
+    'request=GetFeature&' +
+    'typeNames=DigitalWebPipe:electric&' +
+    'outputFormat=application/json&' +
+    'srsname=EPSG:3857'
+});
+
+map_layer_point_source[4]=new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
+    'service=wfs&version=1.0.0&' +
+    'request=GetFeature&' +
+    'typeNames=DigitalWebPipe:water&' +
+    'outputFormat=application/json&' +
+    'srsname=EPSG:3857'
+});
+
+map_layer_point_source[5]=new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
+    'service=wfs&version=1.0.0&' +
+    'request=GetFeature&' +
+    'typeNames=DigitalWebPipe:communication&' +
+    'outputFormat=application/json&' +
+    'srsname=EPSG:3857'
+});
+
+map_layer_point_source[6]=new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: 'http://119.23.244.169:8081/geoserver/wfs?' +
+    'service=wfs&version=1.0.0&' +
+    'request=GetFeature&' +
+    'typeNames=DigitalWebPipe:rain&' +
+    'outputFormat=application/json&' +
+    'srsname=EPSG:3857'
+});
+
 map_layers[1] =   new ol.layer.Vector({
+    name: '天然气巡检点',
+    visable:true,
+    source:map_layer_point_source[1],
+    style: function(feature, resolution) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#DEB887',
+                width: 2
+            }),
+            fill:new ol.style.Stroke({
+                color:'#DEB887',
+                width:2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#DEB887'
+                })
+            })
+        });
+    }
+})
+
+map_layers[2] =   new ol.layer.Vector({
     name: '天然气管网',
     visable:true,
     source:map_layers_source[1],
@@ -162,7 +247,31 @@ map_layers[1] =   new ol.layer.Vector({
     }
 })
 
-map_layers[2] =   new ol.layer.Vector({
+map_layers[3] =   new ol.layer.Vector({
+    name: '污水巡检点',
+    visable:true,
+    source:map_layer_point_source[2],
+    style: function(feature, resolution) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#444444',
+                width: 2
+            }),
+            fill:new ol.style.Stroke({
+                color:'#444444',
+                width:2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#444444'
+                })
+            })
+        });
+    }
+})
+
+map_layers[4] =   new ol.layer.Vector({
     name: '污水管网',
     visable:true,
     source:map_layers_source[2],
@@ -186,7 +295,31 @@ map_layers[2] =   new ol.layer.Vector({
     }
 })
 
-map_layers[3] =   new ol.layer.Vector({
+map_layers[5] =   new ol.layer.Vector({
+    name: '电力巡检点',
+    visable:true,
+    source:map_layer_point_source[3],
+    style: function(feature, resolution) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#BDB76B',
+                width: 2
+            }),
+            fill:new ol.style.Stroke({
+                color:'#BDB76B',
+                width:2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#BDB76B'
+                })
+            })
+        });
+    }
+})
+
+map_layers[6] =   new ol.layer.Vector({
     name: '电力网',
     visable:true,
     source:map_layers_source[3],
@@ -210,7 +343,31 @@ map_layers[3] =   new ol.layer.Vector({
     }
 })
 
-map_layers[4] =   new ol.layer.Vector({
+map_layers[7] =   new ol.layer.Vector({
+    name: '给水巡检点',
+    visable:true,
+    source:map_layer_point_source[4],
+    style: function(feature, resolution) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#1E90FF',
+                width: 2
+            }),
+            fill:new ol.style.Stroke({
+                color:'#1E90FF',
+                width:2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#1E90FF'
+                })
+            })
+        });
+    }
+})
+
+map_layers[8] =   new ol.layer.Vector({
     name: '给水管网',
     visable:true,
     source:map_layers_source[4],
@@ -234,7 +391,31 @@ map_layers[4] =   new ol.layer.Vector({
     }
 })
 
-map_layers[5] =   new ol.layer.Vector({
+map_layers[9] =   new ol.layer.Vector({
+    name: '通讯巡检点',
+    visable:true,
+    source:map_layer_point_source[5],
+    style: function(feature, resolution) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#EEEE00',
+                width: 2
+            }),
+            fill:new ol.style.Stroke({
+                color:'#EEEE00',
+                width:2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#EEEE00'
+                })
+            })
+        });
+    }
+})
+
+map_layers[10] =   new ol.layer.Vector({
     name: '通讯管网',
     visable:true,
     source:map_layers_source[5],
@@ -258,7 +439,31 @@ map_layers[5] =   new ol.layer.Vector({
     }
 })
 
-map_layers[6] =   new ol.layer.Vector({
+map_layers[11] =   new ol.layer.Vector({
+    name: '雨水巡检点',
+    visable:true,
+    source:map_layer_point_source[6],
+    style: function(feature, resolution) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#7FFFD4',
+                width: 2
+            }),
+            fill:new ol.style.Stroke({
+                color:'#7FFFD4',
+                width:2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#7FFFD4'
+                })
+            })
+        });
+    }
+})
+
+map_layers[12] =   new ol.layer.Vector({
     name: '雨水管网',
     visable:true,
     source:map_layers_source[6],
