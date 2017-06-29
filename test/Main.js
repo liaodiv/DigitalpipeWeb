@@ -536,6 +536,8 @@ $('#editlayer5').on('click',function () {
 $('#editlayer6').on('click',function () {
     editsource=map_layers_source[6];
 })
+
+
 /*******************************点击查询**************************************/
 var selectInteraction = new ol.interaction.Select();
 
@@ -544,17 +546,51 @@ $('#edit_btn_choose').on('click',function () {
     map.addInteraction(selectInteraction);
 })
 
+var select_feature;
 selectInteraction.on('select',function (e) {
-    addInformation(e.selected);
+    select_feature=e.selected;
+    addInformation(select_feature);
 })
 
 function addInformation(data)
 {
-    var key = data[0].getKeys();
+    var tname=data[0];
+    tname=tname.getProperties();
+    document.getElementById("singleClick_location").value=tname["location"];
+    document.getElementById("singleClick_last_check").value=tname["last_check"];
+    document.getElementById("singleClick_condition").value=tname["condition"];
+}
+
+$('#edit_btn_OK').on('click',function () {
+    var json_str;
+    json_str={};
+    var tname=select_feature[0];
+    tname=tname.getProperties();
+    var idArray=tname["id"];
+    idArray.split(".");
+    json_str.layername=idArray[0];
+    json_str.id=idArray[1];
+    json_str.location=document.getElementById("singleClick_location").value;
+    json_str.last_check=document.getElementById("singleClick_last_check").value;
+    json_str.condition=document.getElementById("singleClick_condition").value;
+    fetch('http://172.31.164.58:8080/mobile',{
+        method:'POST',
+        mode:'cors',
+        headers:{'Content-TYPE':'application/json'},
+        body:JSON.stringify(json_str)
+    }).then( function (data) {
+        alert(data.toString())
+    }).catch(function (err) {
+        console.log(err)
+    });
+})
+
+$('#edit_btn_cancel').on('click',function () {
+    var key = select_feature[0].getKeys();
     document.getElementById("singleClick_location").value=key["location"];
     document.getElementById("singleClick_last_check").value=key["last_check"];
     document.getElementById("singleClick_condition").value=key["condition"];
-}
+})
 /*****************拉框查询********************/
 
 var selectedFeatures = selectInteraction.getFeatures();//已选要素存储地
