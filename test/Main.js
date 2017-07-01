@@ -84,7 +84,7 @@ map_layers_source[1]=new ol.source.Vector({
     url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalWebPipe:gas_line&' +
+    'typeNames=DigitalWebPipe:gas_lines&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
@@ -94,7 +94,7 @@ map_layers_source[2]=new ol.source.Vector({
     url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalWebPipe:waste_line&' +
+    'typeNames=DigitalWebPipe:waste_lines&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
@@ -104,7 +104,7 @@ map_layers_source[3]=new ol.source.Vector({
     url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalWebPipe:electric_line&' +
+    'typeNames=DigitalWebPipe:electric_lines&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
@@ -114,7 +114,7 @@ map_layers_source[4]=new ol.source.Vector({
     url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalWebPipe:water_line&' +
+    'typeNames=DigitalWebPipe:water_lines&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
@@ -124,7 +124,7 @@ map_layers_source[5]=new ol.source.Vector({
     url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalWebPipe:communication_line&' +
+    'typeNames=DigitalWebPipe:communication_lines&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
@@ -134,7 +134,7 @@ map_layers_source[6]=new ol.source.Vector({
     url: 'http://119.23.244.169:8081/geoserver/wfs?' +
     'service=wfs&version=1.0.0&' +
     'request=GetFeature&' +
-    'typeNames=DigitalWebPipe:rain_line&' +
+    'typeNames=DigitalWebPipe:rain_lines&' +
     'outputFormat=application/json&' +
     'srsname=EPSG:4326'
 });
@@ -562,6 +562,7 @@ function addInformation(data)
 }
 
 $('#edit_btn_OK').on('click',function () {
+    alert("修改成功！");
     var json_str;
     json_str={};
     var tname=select_feature[0];
@@ -583,6 +584,7 @@ $('#edit_btn_OK').on('click',function () {
     }).catch(function (err) {
         console.log(err)
     });
+
 })
 
 $('#edit_btn_cancel').on('click',function () {
@@ -752,6 +754,10 @@ var getclickPoint=function(e)
 {
     point=e.coordinate;
     document.getElementById("task_panel").style.display='block';
+    /*var featureId=(point_feature[i])[0].id_;
+    var idArray=new Array();
+    idArray=featureId.split(".");
+    document.getElementById("task_type").value=idArray[0];*/
 }
 
 $('#task_arrange').on('click',function () {
@@ -762,6 +768,10 @@ $('#task_arrange').on('click',function () {
 
 selectInteraction.on('select',function (e) {
     point_feature[i]=e.selected;
+    var featureId=(point_feature[i])[0].id_;
+    var idArray=new Array();
+    idArray=featureId.split(".");
+    document.getElementById("task_type").value=idArray[0];
 })
 
 $('#task_send').on('click',function(){
@@ -799,9 +809,12 @@ function ToBack(num,backCondition)
     var featureId=(point_feature[num])[0].id_;
     var idArray=new Array();
     idArray=featureId.split(".");
+    var point_transform=ol.proj.transform(point,'EPSG:3857','EPSG:4326');
     tname = data[num].getProperties();
     var key = data[num].getKeys();
     json_str.id=tname["id"];
+    json_str.locationX=point_transform[0];
+    json_str.locationY=point_transform[1];
     json_str.type=tname["type"];
     json_str.reason=tname["reason"];
     json_str.date=tname["time"];
@@ -812,7 +825,7 @@ function ToBack(num,backCondition)
     switch(backCondition)
     {
         case "add":
-            fetch('http://172.31.164.58:8080/mobile',{
+            fetch('http://192.168.43.71:8080/mobile/webtask',{
                 method:'POST',
                 mode:'cors',
                 headers:{'Content-TYPE':'application/json'},
@@ -824,7 +837,7 @@ function ToBack(num,backCondition)
             });
             break;
         case "delete":
-            fetch('http://172.31.164.58:8080/mobile',{
+            fetch('http://192.168.43.71:8080/mobile/webtask',{
                 method:'POST',
                 mode:'cors',
                 headers:{'Content-TYPE':'application/json'},
@@ -872,15 +885,15 @@ var seleclayer=new ol.layer.Vector({
 map.addLayer(seleclayer);
 
 var layername=new Array();
-layername[0]="gas_line";
-layername[1]="waste_line";
-layername[2]="electric_line";
-layername[3]="water_line";
-layername[4]="communication_line";
-layername[5]="rain_line";
+layername[0]="gas_lines";
+layername[1]="waste_lines";
+layername[2]="electric_lines";
+layername[3]="water_lines";
+layername[4]="communication_lines";
+layername[5]="rain_lines";
 
 var condition=new Array();
-condition[0]="loaction";
+condition[0]="location";
 condition[1]="last_check";
 condition[2]="condition";
 
@@ -950,6 +963,72 @@ var featureRequest = function(naspace,layername,propertyname,propertytext) {
         filter: ol.format.filter.equalTo(propertyname,propertytext)
     });
 }
+
+/************************************任务完成反馈********************************/
+
+$('#task_check').on('click',function () {
+    var marker_source=new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        url: 'http://119.23.244.169:8081/geoserver/wfs?' +
+        'service=wfs&version=1.0.0&' +
+        'request=GetFeature&' +
+        'typeNames=DigitalWebPipe:tasks&' +
+        'outputFormat=application/json&' +
+        'srsname=EPSG:4326'
+    });
+    console.log(marker_source);
+    var marker_layer =   new ol.layer.Vector({
+        name: '任务布置情况',
+        visable:true,
+        source:marker_source,
+        style:function(feature, resolution) {
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: '#FFFF00',
+                    width: 2
+                }),
+                fill:new ol.style.Stroke({
+                    color:'#FFFF00',
+                    width:2
+                }),
+                image:new ol.style.Icon({
+                    anchor: [0.5,60],
+                    anchorOrigin: 'top-right',
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    offsetOrigin: 'top-right',
+                    offset:[0,0],
+                    scale:0.4,  //图标缩放比例
+                    opacity: 0.75,  //透明度
+                    src: '../img/marker.png' //图标的url
+                })
+            });
+        }
+    });
+    map.addLayer(marker_layer);
+    var queryRequest = featureRequest_1();
+    fetch('http://119.23.244.169:8081/geoserver/wfs', {
+        method: 'POST',
+        body: new XMLSerializer().serializeToString(queryRequest)
+    }).then(function (response) {
+        return response.json();
+    }).then(function (json) {
+        var features = new ol.format.GeoJSON().readFeatures(json);
+        addTask(features);
+    });
+})
+
+var featureRequest_1 = function() {
+    return new ol.format.WFS().writeGetFeature({
+        srsName: 'EPSG:4326',                  ///参照系
+        featureNS: 'DigitalWebPipe', ///命名空间URI
+        featurePrefix: 'DigitalWebPipe',             //
+        featureTypes: ["tasks"],           ///图层名
+        outputFormat: 'application/json',
+    });
+}
+
+
 
 
 

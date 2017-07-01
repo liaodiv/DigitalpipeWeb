@@ -148,6 +148,12 @@ a.skiplink:focus {
     width: 200px;
     left: 50px;
 }
+#task_check{
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width: 200px;
+}
 #task_send{
     position: absolute;
     top: 500px;
